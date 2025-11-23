@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNotes.Domain", "TechNot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNotes.Application", "TechNotes.Application\TechNotes.Application.csproj", "{F5F66F8F-470D-47BA-9705-C9DF8C715F9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNotes.Infraestructure", "TechNotes.Infraestructure\TechNotes.Infraestructure.csproj", "{81976101-01AF-4A67-9566-D7E4ABC22595}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNotes.Infrastructure", "TechNotes.Infrastructure\TechNotes.Infrastructure.csproj", "{81976101-01AF-4A67-9566-D7E4ABC22595}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

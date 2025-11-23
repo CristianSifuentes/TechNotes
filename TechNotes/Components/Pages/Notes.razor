@@ -5,7 +5,7 @@
 @using TechNotes.Domain.Notes
 
 <PageTitle>Notas</PageTitle>
-<h3>Notes</h3>
+<h3>Notas</h3>
 @if (notes.Count == 0)
 {
     <p>Cargando las notas...</p>
@@ -25,7 +25,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await Task.Delay(1000);
-        var result = NoteService.GetAllNotes();
+        var result = await NoteService.GetAllNotesAsync();
         if (result is not null)
         {
             notes = result.ToList();
