@@ -9,7 +9,8 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
   {
     var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
     optionsBuilder.UseSqlServer(
-      "Server=localhost;Database=TechNotesDb;User ID=SA;Password=MyStrongPass123;TrustServerCertificate=true;MultipleActiveResultSets=true",
+      "Server=localhost\\SQLEXPRESS;Database=TechNotesDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true",
+      // "Server=localhost;Database=TechNotesDb;User ID=SA;Password=MyStrongPass123;TrustServerCertificate=true;MultipleActiveResultSets=true",
        b => b.MigrationsAssembly("TechNotes.Infrastructure"));
     return new ApplicationDbContext(optionsBuilder.Options);
   }
