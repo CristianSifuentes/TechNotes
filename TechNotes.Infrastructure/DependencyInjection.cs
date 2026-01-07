@@ -6,13 +6,13 @@ using TechNotes.Infrastructure.Repositories;
 
 namespace TechNotes.Infrastructure;
 
-public static class DepencyInjection
+public static class DependencyInjection
 {
-  public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configutarion)
+  public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
   {
     services.AddDbContext<ApplicationDbContext>(options =>
       options.UseSqlServer(
-        configutarion.GetConnectionString("DefaultConnection"),
+        configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("TechNotes.Infrastructure")
       )
     );
