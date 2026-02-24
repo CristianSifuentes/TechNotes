@@ -1,5 +1,5 @@
 
-# cs-fullstack-clean-architecture
+# TechNotes
 
 A **full‑stack, production‑grade .NET 8 course project** that walks step‑by‑step from fundamentals to advanced enterprise patterns, combining **Blazor**, **Clean Architecture**, **CQRS**, **Entity Framework Core**, **Identity**, **Tailwind CSS**, and **Cloud Deployment**.
 
