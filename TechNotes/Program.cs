@@ -40,21 +40,29 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<INoteColorService, NoteColorService>();
 
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
+var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+var isGoogleAuthConfigured = !string.IsNullOrWhiteSpace(googleClientId)
+  && !string.IsNullOrWhiteSpace(googleClientSecret);
+
+if (isGoogleAuthConfigured)
 {
-  googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
-  googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
-  googleOptions.CallbackPath = "/signin-google";
-  googleOptions.SignInScheme = IdentityConstants.ExternalScheme;
-  googleOptions.SaveTokens = true;
+  builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+  {
+    googleOptions.ClientId = googleClientId!;
+    googleOptions.ClientSecret = googleClientSecret!;
+    googleOptions.CallbackPath = "/signin-google";
+    googleOptions.SignInScheme = IdentityConstants.ExternalScheme;
+    googleOptions.SaveTokens = true;
 
-  googleOptions.CorrelationCookie.HttpOnly = true;
-  googleOptions.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-  googleOptions.CorrelationCookie.SameSite = SameSiteMode.Lax;
+    googleOptions.CorrelationCookie.HttpOnly = true;
+    googleOptions.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    googleOptions.CorrelationCookie.SameSite = SameSiteMode.Lax;
 
-  googleOptions.Scope.Add("email");
-  googleOptions.Scope.Add("profile");
-});
+    googleOptions.Scope.Add("email");
+    googleOptions.Scope.Add("profile");
+  });
+}
 
 var app = builder.Build();
 
