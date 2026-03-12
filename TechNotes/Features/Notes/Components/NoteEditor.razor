@@ -1,7 +1,9 @@
 ﻿@page "/note-editor"
 @page "/note-editor/{NoteId:int}"
+@attribute [Authorize]
 @inject ISender Sender
-@inject NavigationManager NavigationManager
+@inject NavigationManager NavigationManager;
+@inject UserManager<User> UserManager;
 
 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-lg">
@@ -11,7 +13,7 @@
             <div class="mb-8">
                 <h1 class="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Editar Nota</h1>
                 <p class="mx-auto mt-4 max-w-md text-center text-gray-500">
-                    Editando: @Note.Title
+                    Editando: @Note.Title <span class="ml-2 inline-block"> - Autor: @Note.UserName</span>
                 </p>
             </div>
             <div class="mb-6">
@@ -135,6 +137,8 @@
     private NoteModel? Note { get; set; }
     [Parameter]
     public int? NoteId { get; set; }
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
     protected override async Task OnParametersSetAsync()
     {
         if (NoteId is not null)
@@ -175,11 +179,13 @@
         else
         {
             var command = Note.Adapt<CreateNoteCommand>();
+            command.UserId = UserManager.GetUserId(HttpContext.User);
             var result = await Sender.Send(command);
             if (result.IsSuccessful)
             {
                 Note = result.Adapt<NoteModel>();
                 Console.WriteLine("Nota creada satistactoriamente");
+                NavigationManager.NavigateTo("/notes");
             }
             else
             {
