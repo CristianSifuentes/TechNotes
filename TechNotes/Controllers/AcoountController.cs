@@ -2,7 +2,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TechNotes.Infrastructure.Authentication;
+using TechNotes.Infrastructure.Users;
+
 
 namespace TechNotes.Controllers;
 
@@ -11,11 +12,16 @@ public class AcoountController : Controller
 {
   private readonly SignInManager<User> _signInManager;
   private readonly UserManager<User> _userManager;
+  private readonly RoleManager<IdentityRole> _roleManager;
 
-  public AcoountController(SignInManager<User> signInManager, UserManager<User> userManager)
+  public AcoountController(
+    SignInManager<User> signInManager,
+    UserManager<User> userManager,
+    RoleManager<IdentityRole> roleManager)
   {
     _signInManager = signInManager;
     _userManager = userManager;
+    _roleManager = roleManager;
   }
 
   [AllowAnonymous]
@@ -60,6 +66,11 @@ public class AcoountController : Controller
       EmailConfirmed = true
     };
     await _userManager.CreateAsync(user);
+    if (!await _roleManager.RoleExistsAsync("Reader"))
+    {
+      await _roleManager.CreateAsync(new IdentityRole("Reader"));
+    }
+    await _userManager.AddToRoleAsync(user, "Reader");
     await _userManager.AddLoginAsync(user, info);
     await _signInManager.SignInAsync(user, isPersistent: false);
     return Redirect("/notes");
