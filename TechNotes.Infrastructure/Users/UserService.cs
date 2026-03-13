@@ -13,12 +13,39 @@ public class UserService : IUserService
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly INoteRepository _noteRepository;
 
-  public UserService(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, INoteRepository noteRepository)
+  private readonly RoleManager<IdentityRole> _roleManager;
+
+  public UserService(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor,
+                     INoteRepository noteRepository, RoleManager<IdentityRole> roleManager)
   {
     _userManager = userManager;
     _httpContextAccessor = httpContextAccessor;
     _noteRepository = noteRepository;
+    _roleManager = roleManager;
   }
+
+  public async Task AddUserRoleAsync(string userId, string roleName)
+  {
+    var user = await _userManager.FindByIdAsync(userId);
+    if (user is null)
+    {
+      return;
+    }
+    if (!await _roleManager.RoleExistsAsync(roleName))
+    {
+      var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
+      if (!roleResult.Succeeded)
+      {
+        throw new Exception("Error al crear el rol");
+      }
+    }
+    var result = await _userManager.AddToRoleAsync(user, roleName);
+    if (!result.Succeeded)
+    {
+      throw new Exception("Error al agregar el rol al usuario");
+    }
+  }
+
   public async Task<bool> CurrentUserCanCreateNoteAsync()
   {
     var user = await GetCurrentUserAsync();
@@ -59,11 +86,40 @@ public class UserService : IUserService
     return user.Id;
   }
 
+  public async Task<List<string>> GetUserRolesAsync(string userId)
+  {
+    var user = await _userManager.FindByIdAsync(userId);
+    if (user is null)
+    {
+      return new List<string>();
+    }
+    var roles = await _userManager.GetRolesAsync(user);
+    return roles.ToList();
+  }
+
   public async Task<bool> IsCurrentUserInRoleAsync(string role)
   {
     var user = await GetCurrentUserAsync();
     var isUserInRole = user is not null && await _userManager.IsInRoleAsync(user, role);
     return isUserInRole;
+  }
+
+  public async Task RemoveRoleFromUserAsync(string userId, string roleName)
+  {
+    var user = await _userManager.FindByIdAsync(userId);
+    if (user is null)
+    {
+      throw new Exception("Usuario no encontrado");
+    }
+    if (!await _roleManager.RoleExistsAsync(roleName))
+    {
+      throw new Exception("Rol no encontrado");
+    }
+    var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+    if (!result.Succeeded)
+    {
+      throw new Exception("Error al eliminar el rol del usuario");
+    }
   }
 
   private async Task<User?> GetCurrentUserAsync()
