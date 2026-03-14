@@ -1,5 +1,4 @@
 using System;
-using MediatR;
 using TechNotes.Domain.Abtractions;
 
 namespace TechNotes.Application.Abstractions.RequestHandling;
