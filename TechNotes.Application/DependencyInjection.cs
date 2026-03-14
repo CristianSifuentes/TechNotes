@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using TechNotes.Application.Notes;
 
@@ -16,12 +15,10 @@ public static class DependencyInjection
 {
   public static IServiceCollection AddApplication(this IServiceCollection services)
   {
-    services.AddMediatR(configuration =>
-    {
-      configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
-    });
-    // services.AddScoped<INoteService, NoteService>();
+    services.AddMediator(typeof(DependencyInjection).Assembly);
+    services.AddScoped<INotesOverviewService, NotesOverviewService>();
     return services;
   }
+
 
 }

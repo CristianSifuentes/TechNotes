@@ -1,6 +1,3 @@
-using System;
-using MediatR;
-using TechNotes.Application.Notes;
 using TechNotes.Domain.User;
 
 namespace TechNotes.Application.Users.GetUsers;
