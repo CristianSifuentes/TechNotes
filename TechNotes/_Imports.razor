@@ -8,7 +8,7 @@
 @using Microsoft.JSInterop
 @using TechNotes
 @using TechNotes.Components
-@using MediatR
+@using TechNotes.Application.Abstractions.RequestHandling
 @using TechNotes.Domain.Notes
 @using TechNotes.Application.Notes.GetNotes
 @using TechNotes.Application.Notes
@@ -21,11 +21,11 @@
 @using TechNotes.Features.Notes.Services
 @using TechNotes.Application.Users.RegisterUser
 @using TechNotes.Application.Users.LoginUser
-@using TechNotes.Application.Users.AddRoleToUser
-@using TechNotes.Application.Users.RemoveRoleFromUser
-@using TechNotes.Application.Users.GetUserRoles
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using TechNotes.Infrastructure.Authentication
 @using TechNotes.Infrastructure.Users
+@using TechNotes.Application.Users.AddRoleToUser
+@using TechNotes.Application.Users.GetUserRoles
+@using TechNotes.Application.Users.RemoveRoleFromUser
