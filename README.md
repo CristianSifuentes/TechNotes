@@ -77,6 +77,8 @@ A fast‑track refresher for developers new to C# or .NET:
 - Asynchronous programming (`async` / `await`)
 - Attributes (decorators)
 
+  [Branch](#2-c-and-net-fundamentals-optional)
+
 ---
 
 ## 3. Project Creation
